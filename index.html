@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>AKILA — a dwelling among starlit boughs</title>
+<meta name="description" content="A small hollow at the wood's edge: writing, work, and a way to reach me.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cpolygon points='60,26 65.36,47.07 84.04,35.96 72.93,54.64 94,60 72.93,65.36 84.04,84.04 65.36,72.93 60,94 54.64,72.93 35.96,84.04 47.07,65.36 26,60 47.07,54.64 35.96,35.96 54.64,47.07' fill='none' stroke='%23B4924F' stroke-width='4'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
+
+<style>
+  /* ---------- Tokens ---------- */
+  :root{
+    --ink: #0B1712;
+    --ink-2: #122019;
+    --ink-3: #17291F;
+    --line: rgba(180,146,79,0.22);
+    --silver: #C7D3C9;
+    --silver-dim: #91A69A;
+    --parchment: #EDE6D3;
+    --gold: #B4924F;
+    --gold-bright: #E3C989;
+    --font-display: 'Cinzel', 'Trajan Pro', serif;
+    --font-body: 'Cormorant Garamond', 'Iowan Old Style', serif;
+    --maxw: 1120px;
+  }
+
+  /* ---------- Reset ---------- */
+  *,*::before,*::after{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; scroll-padding-top: 96px; }
+  body{ margin:0; }
+  h1,h2,h3,p,ul,figure{ margin:0; }
+  ul{ list-style:none; padding:0; }
+  img,svg{ display:block; max-width:100%; }
+  a{ color:inherit; text-decoration:none; }
+  button{ font:inherit; background:none; border:none; color:inherit; cursor:pointer; }
+  ::selection{ background: var(--gold); color: var(--ink); }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *,*::before,*::after{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
+  }
+
+  /* ---------- Base ---------- */
+  body{
+    background-color: var(--ink);
+    background-image:
+      radial-gradient(1px 1px at 18px 28px, rgba(237,230,211,.32), transparent),
+      radial-gradient(1px 1px at 118px 78px, rgba(237,230,211,.22), transparent),
+      radial-gradient(1.5px 1.5px at 198px 148px, rgba(237,230,211,.28), transparent),
+      radial-gradient(1px 1px at 58px 188px, rgba(237,230,211,.18), transparent),
+      radial-gradient(1px 1px at 318px 58px, rgba(237,230,211,.26), transparent),
+      radial-gradient(1.5px 1.5px at 258px 238px, rgba(237,230,211,.2), transparent),
+      radial-gradient(1px 1px at 358px 318px, rgba(237,230,211,.28), transparent),
+      radial-gradient(1px 1px at 8px 338px, rgba(237,230,211,.16), transparent);
+    background-repeat: repeat;
+    background-size: 400px 400px;
+    background-attachment: fixed;
+    color: var(--silver);
+    font-family: var(--font-body);
+    font-size: 1.15rem;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,h2,h3{ font-family: var(--font-display); color: var(--parchment); font-weight: 600; letter-spacing: 0.03em; }
+  h2{ font-size: clamp(1.7rem, 1.3rem + 1.6vw, 2.5rem); }
+  h3{ font-size: clamp(1.2rem, 1.05rem + 0.6vw, 1.5rem); font-weight: 500; }
+
+  a:focus-visible, button:focus-visible{ outline: 2px solid var(--gold-bright); outline-offset: 4px; }
+
+  .skip-link{
+    position:absolute; left:1rem; top:-3rem; z-index:200;
+    background: var(--ink-3); color: var(--parchment); padding:.6rem 1rem;
+    border:1px solid var(--gold); transition: top .2s ease;
+  }
+  .skip-link:focus{ top:1rem; }
+
+  .wrap{ max-width: var(--maxw); margin: 0 auto; padding: 0 clamp(1.25rem, 4vw, 3rem); }
+
+  /* ---------- Hidden defs ---------- */
+  .defs{ position:absolute; width:0; height:0; overflow:hidden; }
+
+  .divider-svg{ width: min(360px, 70%); height: 40px; margin: 0 auto; color: var(--gold); opacity: .55; }
+  .icon{ width: 34px; height: 34px; color: var(--gold); }
+
+  /* ---------- Nav ---------- */
+  .nav{
+    position: fixed; inset: 0 0 auto 0; z-index: 100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 1.1rem clamp(1.25rem, 4vw, 3rem);
+    background: rgba(11,23,18,0.72);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .brand{
+    font-family: var(--font-display); font-size: 1.15rem; letter-spacing: .06em;
+    color: var(--parchment);
+  }
+  .brand span{ color: var(--gold); margin-right: .4rem; }
+
+  .nav-links{ display:flex; gap: clamp(1.25rem, 3vw, 2.5rem); }
+  .nav-links a{
+    font-size: 1.02rem; color: var(--silver);
+    padding-bottom: .2rem; border-bottom: 1px solid transparent;
+    transition: color .25s ease, border-color .25s ease;
+  }
+  .nav-links a:hover{ color: var(--gold-bright); border-color: var(--gold); }
+
+  .nav-toggle{ display:none; width: 34px; height: 26px; position:relative; }
+  .nav-toggle span{
+    position:absolute; left:0; right:0; height:2px; background: var(--parchment);
+    transition: transform .3s ease, opacity .3s ease;
+  }
+  .nav-toggle span:nth-child(1){ top:0; }
+  .nav-toggle span:nth-child(2){ top:12px; }
+  .nav-toggle span:nth-child(3){ top:24px; }
+  .nav.is-open .nav-toggle span:nth-child(1){ transform: translateY(12px) rotate(45deg); }
+  .nav.is-open .nav-toggle span:nth-child(2){ opacity:0; }
+  .nav.is-open .nav-toggle span:nth-child(3){ transform: translateY(-12px) rotate(-45deg); }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position: relative;
+    min-height: 100vh;
+    display:flex; align-items:center; justify-content:center;
+    text-align:center; overflow:hidden;
+    padding: 7rem 1.5rem 4rem;
+    background:
+      radial-gradient(ellipse 60% 45% at 50% 18%, rgba(180,146,79,0.12), transparent 60%),
+      radial-gradient(ellipse 80% 55% at 50% 105%, rgba(18,48,46,0.65), transparent 70%),
+      linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 100%);
+  }
+  .hero-stars{ position:absolute; inset:0; overflow:hidden; pointer-events:none; }
+  .star{
+    position:absolute; border-radius:50%; background: var(--parchment);
+    animation: twinkle var(--dur, 4s) ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+  }
+  @keyframes twinkle{ 0%,100%{ opacity:.12; } 50%{ opacity:1; } }
+
+  .hero-inner{ position: relative; z-index: 2; max-width: 640px; }
+  .sigil-mark{
+    width: 108px; height:108px; margin: 0 auto 1.75rem; color: var(--gold);
+    animation: turn 140s linear infinite;
+  }
+  @keyframes turn{ to{ transform: rotate(360deg); } }
+
+  .hero h1{
+    font-size: clamp(2.75rem, 2.1rem + 4vw, 5.25rem);
+    text-shadow: 0 0 40px rgba(180,146,79,0.25);
+  }
+  .hero .tagline{
+    margin-top: .9rem; font-style: italic; color: var(--silver-dim);
+    font-size: clamp(1.05rem, 1vw + .9rem, 1.35rem); letter-spacing: .01em;
+  }
+  .hero .divider-svg{ margin-top: 2.5rem; }
+
+  /* ---------- Section spacing ---------- */
+  section{ padding: clamp(4rem, 8vw, 7rem) 0; }
+  .ornament{ padding: 1.5rem 0; }
+
+  /* ---------- Dwelling ---------- */
+  .dwelling-grid{
+    display:grid; grid-template-columns: 0.8fr 1.2fr; gap: clamp(2rem, 5vw, 4.5rem);
+    align-items:center;
+  }
+  .leaf-art{ color: var(--gold); opacity: .85; justify-self:center; width: min(220px, 100%); }
+  .dwelling-text p{ max-width: 58ch; }
+  .dwelling-text p + p{ margin-top: 1.1rem; }
+  .dwelling-text h2{ margin-bottom: 1.25rem; }
+
+  /* ---------- Chronicles ---------- */
+  .chronicles h2{ margin-bottom: 2.5rem; }
+  .chronicle-list li{
+    display:flex; gap: clamp(1.5rem, 4vw, 3rem);
+    padding: 2rem 0; border-bottom: 1px solid var(--line);
+  }
+  .chronicle-list li:last-child{ border-bottom:none; }
+  .chronicle-season{
+    flex: 0 0 150px; font-style: italic; color: var(--gold); font-size: 1.05rem;
+    padding-top: .2rem;
+  }
+  .chronicle-body h3{ margin-bottom:.5rem; }
+  .chronicle-body p{ color: var(--silver-dim); max-width: 56ch; }
+
+  /* ---------- Grove ---------- */
+  .grove h2{ margin-bottom: 2.5rem; }
+  .grove-grid{ display:grid; grid-template-columns: repeat(6, 1fr); gap: 1.5rem; }
+  .grove-item{
+    grid-column: span 2;
+    background: var(--ink-2); border-top: 2px solid var(--gold);
+    padding: 1.9rem 1.6rem 2.1rem;
+    transition: transform .3s ease, background .3s ease;
+  }
+  .grove-item:hover{ transform: translateY(-4px); background: var(--ink-3); }
+  .grove-grid .grove-item:nth-child(1),
+  .grove-grid .grove-item:nth-child(2){ grid-column: span 3; }
+  .grove-item .icon{ margin-bottom: 1.1rem; }
+  .grove-item h3{ margin-bottom: .4rem; }
+  .grove-item p{ color: var(--silver-dim); font-size: 1.02rem; }
+
+  /* ---------- Raven / contact ---------- */
+  .raven{ text-align:center; }
+  .raven h2{ margin-bottom: 1rem; }
+  .raven > p{ max-width: 52ch; margin: 0 auto 2.25rem; color: var(--silver-dim); }
+  .raven-link{
+    display:inline-block; font-family: var(--font-display); font-size: 1.05rem;
+    letter-spacing: .04em; color: var(--parchment);
+    border: 1px solid var(--gold); padding: .95rem 2.1rem;
+    transition: background .25s ease, color .25s ease;
+  }
+  .raven-link:hover{ background: var(--gold); color: var(--ink); }
+
+  .socials{
+    margin-top: 2.25rem; display:flex; justify-content:center; align-items:center;
+    gap: 1rem; flex-wrap: wrap; color: var(--silver-dim);
+  }
+  .socials a{ color: var(--silver); transition: color .25s ease; }
+  .socials a:hover{ color: var(--gold-bright); }
+  .socials .hedera{ color: var(--gold); opacity:.7; }
+
+  /* ---------- Footer ---------- */
+  footer{
+    padding: 3rem 1.5rem 3.5rem; text-align:center;
+    border-top: 1px solid var(--line);
+  }
+  .footer-mark{ width: 40px; height:40px; margin: 0 auto 1rem; color: var(--gold); opacity:.8; }
+  footer p{ color: var(--silver-dim); font-size: .98rem; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px){
+    .dwelling-grid{ grid-template-columns: 1fr; text-align:center; }
+    .dwelling-text p{ margin-left:auto; margin-right:auto; }
+    .leaf-art{ width: 160px; }
+  }
+
+  @media (max-width: 720px){
+    .nav-toggle{ display:block; }
+    .nav-links{
+      position: fixed; inset: 0; z-index: 90;
+      flex-direction:column; align-items:center; justify-content:center;
+      gap: 2.25rem; background: rgba(11,23,18,0.97);
+      opacity:0; visibility:hidden; transform: translateY(-8px);
+      transition: opacity .25s ease, transform .25s ease, visibility .25s;
+    }
+    .nav-links a{ font-size: 1.3rem; }
+    .nav.is-open .nav-links{ opacity:1; visibility:visible; transform:none; }
+
+    .chronicle-list li{ flex-direction:column; gap: .5rem; }
+    .chronicle-season{ flex-basis:auto; }
+
+    .grove-grid{ grid-template-columns: 1fr; }
+    .grove-grid .grove-item,
+    .grove-grid .grove-item:nth-child(1),
+    .grove-grid .grove-item:nth-child(2){ grid-column: span 1; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#top">Skip to content</a>
+
+<!-- ============ Reusable SVG symbols ============ -->
+<svg class="defs" aria-hidden="true">
+  <defs>
+    <symbol id="sigil" viewBox="0 0 120 120">
+      <circle cx="60" cy="60" r="46" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <polygon points="60,26 65.36,47.07 84.04,35.96 72.93,54.64 94,60 72.93,65.36 84.04,84.04 65.36,72.93 60,94 54.64,72.93 35.96,84.04 47.07,65.36 26,60 47.07,54.64 35.96,35.96 54.64,47.07" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <polygon points="60,2 64,6 60,10 56,6" fill="currentColor"/>
+      <polygon points="114,56 118,60 114,64 110,60" fill="currentColor"/>
+      <polygon points="60,110 64,114 60,118 56,114" fill="currentColor"/>
+      <polygon points="6,56 10,60 6,64 2,60" fill="currentColor"/>
+    </symbol>
+
+    <symbol id="leaf-shape" viewBox="0 0 30 14">
+      <path d="M15 1 C22 1 28 6 28 7 C28 8 22 13 15 13 C8 13 2 8 2 7 C2 6 8 1 15 1 Z" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <line x1="4" y1="7" x2="26" y2="7" stroke="currentColor" stroke-width="1"/>
+    </symbol>
+
+    <symbol id="vine" viewBox="0 0 600 48">
+      <line x1="16" y1="24" x2="268" y2="24" stroke="currentColor" stroke-width="1"/>
+      <line x1="332" y1="24" x2="584" y2="24" stroke="currentColor" stroke-width="1"/>
+      <polygon points="300,13 311,24 300,35 289,24" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <use href="#leaf-shape" width="30" height="14" x="130" y="10" transform="rotate(-18 145 17)"/>
+      <use href="#leaf-shape" width="30" height="14" x="440" y="10" transform="rotate(18 455 17)"/>
+    </symbol>
+
+    <symbol id="leaf-branch" viewBox="0 0 200 340">
+      <path d="M100 330 C 96 260 104 200 100 120 C 98 70 100 30 100 10" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <use href="#leaf-shape" width="46" height="22" x="52" y="255" transform="rotate(-25 75 266)"/>
+      <use href="#leaf-shape" width="46" height="22" x="102" y="225" transform="rotate(20 125 236)"/>
+      <use href="#leaf-shape" width="46" height="22" x="48" y="175" transform="rotate(-15 71 186)"/>
+      <use href="#leaf-shape" width="46" height="22" x="104" y="140" transform="rotate(22 127 151)"/>
+      <use href="#leaf-shape" width="40" height="19" x="56" y="95" transform="rotate(-20 76 104)"/>
+      <use href="#leaf-shape" width="40" height="19" x="102" y="62" transform="rotate(18 122 71)"/>
+      <circle cx="100" cy="14" r="4" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    </symbol>
+
+    <symbol id="icon-tree" viewBox="0 0 64 64">
+      <line x1="32" y1="58" x2="32" y2="34" stroke="currentColor" stroke-width="1.6"/>
+      <path d="M32 34 C 16 34 12 20 20 14 C 22 6 34 4 38 12 C 48 10 52 22 42 26 C 48 30 40 38 32 34 Z" fill="none" stroke="currentColor" stroke-width="1.4"/>
+    </symbol>
+
+    <symbol id="icon-moon" viewBox="0 0 64 64">
+      <path d="M40 12 A 22 22 0 1 0 40 52 A 17 17 0 1 1 40 12 Z" fill="none" stroke="currentColor" stroke-width="1.4"/>
+    </symbol>
+
+    <symbol id="icon-feather" viewBox="0 0 64 64">
+      <path d="M46 8 C 20 14 12 36 16 56 C 28 52 30 42 30 42" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <line x1="46" y1="8" x2="16" y2="56" stroke="currentColor" stroke-width="1"/>
+      <line x1="40" y1="16" x2="28" y2="24" stroke="currentColor" stroke-width="1"/>
+      <line x1="34" y1="26" x2="22" y2="34" stroke="currentColor" stroke-width="1"/>
+      <line x1="28" y1="36" x2="18" y2="42" stroke="currentColor" stroke-width="1"/>
+    </symbol>
+
+    <symbol id="icon-leaf-lg" viewBox="0 0 64 64">
+      <path d="M12 52 C 12 24 34 10 54 10 C 54 32 40 52 12 52 Z" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <path d="M14 50 C 26 38 38 24 53 11" fill="none" stroke="currentColor" stroke-width="1"/>
+    </symbol>
+
+    <symbol id="icon-stars" viewBox="0 0 64 64">
+      <polygon points="20,8 22,16 30,18 22,20 20,28 18,20 10,18 18,16" fill="currentColor"/>
+      <polygon points="44,26 45.5,32 52,33.5 45.5,35 44,41 42.5,35 36,33.5 42.5,32" fill="currentColor"/>
+      <polygon points="30,44 31,48 35,49 31,50 30,54 29,50 25,49 29,48" fill="currentColor"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ============ Nav ============ -->
+<header class="nav" id="siteNav">
+  <a class="brand" href="#top"><span>✧</span>AkilaSK</a>
+  <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+    <span></span><span></span><span></span>
+  </button>
+  <nav class="nav-links" id="navLinks">
+    <a href="#dwelling">The Dwelling</a>
+    <a href="#chronicles">Chronicles</a>
+    <a href="#grove">The Grove</a>
+    <a href="#raven">Send a Raven</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- ============ Hero ============ -->
+  <section class="hero">
+    <div class="hero-stars" id="heroStars" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <svg class="sigil-mark" aria-hidden="true"><use href="#sigil"/></svg>
+      <!-- Swap the name and tagline below for your own -->
+      <h1>AkilSK</h1>
+      <p class="tagline">a dwelling among starlit boughs</p>
+      <svg class="divider-svg" aria-hidden="true"><use href="#vine"/></svg>
+    </div>
+  </section>
+
+  <!-- ============ The Dwelling ============ -->
+  <section class="dwelling" id="dwelling">
+    <div class="wrap dwelling-grid">
+      <svg class="leaf-art" viewBox="0 0 200 340" aria-hidden="true"><use href="#leaf-branch"/></svg>
+      <div class="dwelling-text">
+        <h2>The Dwelling</h2>
+        <!-- Replace this with your own bio -->
+        <p>I keep a small hollow at the wood's edge — half writing desk, half window onto the stars. Here you'll find unfinished maps, notes passed between branches, and whatever craft I've been turning over by lamplight.</p>
+        <p>Some visitors arrive by starlight, others by a wrong turn in the search engines. Either way — welcome. Stay a while before the path calls you onward.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="ornament"><svg class="divider-svg" aria-hidden="true"><use href="#vine"/></svg></div>
+
+  <!-- ============ Chronicles ============ -->
+  <section class="chronicles" id="chronicles">
+    <div class="wrap">
+      <h2>Chronicles</h2>
+      <ul class="chronicle-list">
+        <li>
+          <span class="chronicle-season">First Leaf</span>
+          <div class="chronicle-body">
+            <h3>On Beginning Things Slowly</h3>
+            <p>A note on starting a journal, a garden, and everything else worth doing badly at first.</p>
+          </div>
+        </li>
+        <li>
+          <span class="chronicle-season">Long Light</span>
+          <div class="chronicle-body">
+            <h3>Notes from a Slow Afternoon</h3>
+            <p>Three hours, one hammock, and the case for doing absolutely nothing on purpose.</p>
+          </div>
+        </li>
+        <li>
+          <span class="chronicle-season">Waning Moon</span>
+          <div class="chronicle-body">
+            <h3>A Small Catalogue of Found Things</h3>
+            <p>Feathers, sea glass, a key to no known door — an inventory of the pocket-sized and unexplained.</p>
+          </div>
+        </li>
+        <li>
+          <span class="chronicle-season">New Green</span>
+          <div class="chronicle-body">
+            <h3>What the Old Maps Got Wrong</h3>
+            <p>Every map is a story about where someone stopped looking. A few thoughts on redrawing mine.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="ornament"><svg class="divider-svg" aria-hidden="true"><use href="#vine"/></svg></div>
+
+  <!-- ============ The Grove ============ -->
+  <section class="grove" id="grove">
+    <div class="wrap">
+      <h2>The Grove</h2>
+      <div class="grove-grid">
+        <div class="grove-item">
+          <svg class="icon" aria-hidden="true"><use href="#icon-tree"/></svg>
+          <h3>Boughs, Study I</h3>
+          <p>Ink on paper — an attempt at the old elm by the gate.</p>
+        </div>
+        <div class="grove-item">
+          <svg class="icon" aria-hidden="true"><use href="#icon-moon"/></svg>
+          <h3>Waxing</h3>
+          <p>A small print, first in a set of eight phases.</p>
+        </div>
+        <div class="grove-item">
+          <svg class="icon" aria-hidden="true"><use href="#icon-feather"/></svg>
+          <h3>Correspondence</h3>
+          <p>Letterforms drawn for a slow-mail project.</p>
+        </div>
+        <div class="grove-item">
+          <svg class="icon" aria-hidden="true"><use href="#icon-leaf-lg"/></svg>
+          <h3>Herbarium, Unfinished</h3>
+          <p>Pressed leaves, and the notes I never filed.</p>
+        </div>
+        <div class="grove-item">
+          <svg class="icon" aria-hidden="true"><use href="#icon-stars"/></svg>
+          <h3>Chart of Quiet Skies</h3>
+          <p>A hand-drawn map of the view from the back step.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ornament"><svg class="divider-svg" aria-hidden="true"><use href="#vine"/></svg></div>
+
+  <!-- ============ Send a Raven ============ -->
+  <section class="raven" id="raven">
+    <div class="wrap">
+      <h2>Send a Raven</h2>
+      <p>If a message finds its way here, I'd like to read it. Write below, or find me along quieter paths.</p>
+      <!-- Replace with your real email address -->
+      <a class="raven-link" href="mailto:hello@example.com">Write to AkilSK</a>
+      <div class="socials">
+        <!-- Replace with your real profile links -->
+        <a href="https://github.com/yourusername">GitHub</a>
+        <span class="hedera" aria-hidden="true">❦</span>
+        <a href="mailto:hello@example.com">Mail</a>
+        <span class="hedera" aria-hidden="true">❦</span>
+        <a href="#">Elsewhere</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <svg class="footer-mark" aria-hidden="true"><use href="#sigil"/></svg>
+  <p>Crafted beneath old stars. AkilSK, <span id="year"></span>.</p>
+</footer>
+
+<script>
+  (function(){
+    "use strict";
+
+    // Footer year
+    var yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    // Mobile nav toggle
+    var nav = document.getElementById('siteNav');
+    var toggle = document.getElementById('navToggle');
+    var links = document.getElementById('navLinks');
+
+    if (toggle && nav && links){
+      toggle.addEventListener('click', function(){
+        var isOpen = nav.classList.toggle('is-open');
+        toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+      links.querySelectorAll('a').forEach(function(a){
+        a.addEventListener('click', function(){
+          nav.classList.remove('is-open');
+          toggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+
+    // Twinkling hero stars — skipped for reduced-motion users
+    var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var container = document.getElementById('heroStars');
+    if (container){
+      var count = prefersReduced ? 0 : 70;
+      for (var i = 0; i < count; i++){
+        var s = document.createElement('span');
+        s.className = 'star';
+        var size = (Math.random() * 1.8 + 0.6).toFixed(2);
+        s.style.width = size + 'px';
+        s.style.height = size + 'px';
+        s.style.left = (Math.random() * 100).toFixed(2) + '%';
+        s.style.top = (Math.random() * 100).toFixed(2) + '%';
+        s.style.setProperty('--dur', (Math.random() * 3 + 2.5).toFixed(2) + 's');
+        s.style.setProperty('--delay', (Math.random() * 4).toFixed(2) + 's');
+        container.appendChild(s);
+      }
+    }
+  })();
+</script>
+
+</body>
+</html>
